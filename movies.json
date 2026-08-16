@@ -1,0 +1,79 @@
+[
+  {
+    "title": "Office Space",
+    "year": 1999,
+    "rating": "R",
+    "runtime": 89,
+    "hook": "TPS reports, a red stapler, and a plan that almost works."
+  },
+  {
+    "title": "Bubble Boy",
+    "year": 2001,
+    "rating": "PG-13",
+    "runtime": 84,
+    "hook": "Immune-deficient kid crosses the country to stop a wedding."
+  },
+  {
+    "title": "Idiocracy",
+    "year": 2006,
+    "rating": "R",
+    "runtime": 84,
+    "hook": "Average guy wakes up 500 years later as the smartest man alive."
+  },
+  {
+    "title": "Queen of the Damned",
+    "year": 2002,
+    "rating": "R",
+    "runtime": 101,
+    "hook": "Lestat becomes a rock star. It goes badly for everyone."
+  },
+  {
+    "title": "Joe Dirt",
+    "year": 2001,
+    "rating": "PG-13",
+    "runtime": 91,
+    "hook": "Mullet, jorts, and a nationwide search for his parents."
+  },
+  {
+    "title": "Mystery Men",
+    "year": 1999,
+    "rating": "PG-13",
+    "runtime": 121,
+    "hook": "The backup superheroes have to save the city themselves."
+  },
+  {
+    "title": "Galaxy Quest",
+    "year": 1999,
+    "rating": "PG",
+    "runtime": 102,
+    "hook": "Washed-up sci-fi actors get drafted into a real space war."
+  },
+  {
+    "title": "Tropic Thunder",
+    "year": 2008,
+    "rating": "R",
+    "runtime": 107,
+    "hook": "A war movie cast gets dropped into an actual war."
+  },
+  {
+    "title": "Hot Fuzz",
+    "year": 2007,
+    "rating": "R",
+    "runtime": 121,
+    "hook": "Supercop is exiled to a quiet village where everyone keeps dying."
+  },
+  {
+    "title": "Shaun of the Dead",
+    "year": 2004,
+    "rating": "R",
+    "runtime": 99,
+    "hook": "Zombie outbreak versus a guy who just wants one more pint."
+  },
+  {
+    "title": "Scott Pilgrim vs. the World",
+    "year": 2010,
+    "rating": "PG-13",
+    "runtime": 112,
+    "hook": "Beat seven evil exes to earn the right to date the girl."
+  }
+]
