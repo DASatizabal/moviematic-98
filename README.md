@@ -30,6 +30,11 @@ your settings are all remembered in your browser.
 - **File › Add Title** adds a movie (title, year, rating, runtime, hook) that is
   merged into the list and marked with a ★
 - **File › Add Snack** does the same for the pantry
+- Every row has an **×** to remove that title. A ★ title is deleted for good
+  (after a confirm, since it exists nowhere else); a baseline title is only
+  hidden in your browser — `movies.json` is never touched
+- **File › Restore Hidden Titles** lists everything you have hidden and puts any
+  of it back, one at a time or all at once
 - **File › Export Collection** downloads your custom titles, custom snacks, and
   watched marks as JSON; **Import Collection** merges one back in, skipping
   duplicates
@@ -119,6 +124,7 @@ No build step, no frameworks, no dependencies, no CDN links.
 | `moviematic98:watched:v1` | Watched titles |
 | `moviematic98:customMovies:v1` | Titles added through the UI |
 | `moviematic98:customSnacks:v1` | Snacks added through the UI |
+| `moviematic98:hidden:v1` | Baseline titles removed in this browser |
 | `moviematic98:settings:v1` | Theme, scanlines, sound, filters |
 
 Vetoes are deliberately not stored — they last for the session only.

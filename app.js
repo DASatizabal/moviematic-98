@@ -11,6 +11,7 @@
     watched: "moviematic98:watched:v1",
     movies: "moviematic98:customMovies:v1",
     snacks: "moviematic98:customSnacks:v1",
+    hidden: "moviematic98:hidden:v1",
     settings: "moviematic98:settings:v1"
   };
 
@@ -36,6 +37,7 @@
   var snacks = [];
 
   var watched = Object.create(null);
+  var hidden = Object.create(null);   // baseline titles removed from this browser
   var vetoed = Object.create(null);   // session only; a veto is for tonight
   var selectedIndex = -1;
   var spinning = false;
@@ -125,6 +127,19 @@
   function saveWatched() {
     writeJSON(STORAGE.watched, Object.keys(watched));
   }
+
+  function loadHidden() {
+    var store = Object.create(null);
+    var parsed = readJSON(STORAGE.hidden, []);
+    if (Array.isArray(parsed)) {
+      parsed.forEach(function (k) {
+        if (typeof k === "string") store[k] = true;
+      });
+    }
+    return store;
+  }
+
+  function saveHidden() { writeJSON(STORAGE.hidden, Object.keys(hidden)); }
 
   function saveCustomMovies() { writeJSON(STORAGE.movies, customMovies); }
   function saveCustomSnacks() { writeJSON(STORAGE.snacks, customSnacks); }
@@ -289,11 +304,26 @@
   /* ---------- list rendering ------------------------------------------------ */
 
   function rebuildMovies() {
-    movies = baseMovies.concat(customMovies);
+    /* Hiding never edits movies.json; it just filters the baseline per browser. */
+    movies = baseMovies.filter(function (m) {
+      return !hidden[keyOf(m)];
+    }).concat(customMovies);
+  }
+
+  function hiddenTitles() {
+    return baseMovies.filter(function (m) {
+      return !!hidden[keyOf(m)];
+    });
   }
 
   function renderList() {
     el.listbox.textContent = "";
+
+    if (!movies.length) {
+      el.listbox.appendChild(text("p", "listbox-loading",
+        "Every title is removed. Put some back with File › Restore Hidden Titles."));
+      return;
+    }
 
     movies.forEach(function (movie, index) {
       var row = text("div", "row");
@@ -316,17 +346,17 @@
       row.appendChild(title);
       row.appendChild(year);
 
-      if (movie.custom) {
-        var del = text("button", "row-del", "×");
-        del.type = "button";
-        del.title = "Remove this custom title";
-        del.setAttribute("aria-label", "Remove " + movie.title);
-        del.addEventListener("click", function (event) {
-          event.stopPropagation();
-          removeCustomMovie(movie);
-        });
-        row.appendChild(del);
-      }
+      var del = text("button", "row-del", "×");
+      del.type = "button";
+      del.title = movie.custom
+        ? "Delete this custom title"
+        : "Remove this title (restorable under File)";
+      del.setAttribute("aria-label", "Remove " + movie.title);
+      del.addEventListener("click", function (event) {
+        event.stopPropagation();
+        removeMovie(movie);
+      });
+      row.appendChild(del);
 
       el.listbox.appendChild(row);
 
@@ -381,7 +411,9 @@
     movies.forEach(function (m) {
       if (watched[keyOf(m)]) count++;
     });
-    el["status-titles"].textContent = plural(movies.length, "title");
+    var hiddenCount = hiddenTitles().length;
+    el["status-titles"].textContent = plural(movies.length, "title") +
+      (hiddenCount ? " (" + hiddenCount + " hidden)" : "");
     el["status-watched"].textContent = count + " watched";
     el["status-pool"].textContent = buildPool().length + " in pool";
     renderFilterHint();
@@ -431,7 +463,32 @@
     updateControls();
   }
 
-  function removeCustomMovie(movie) {
+  function afterRemoval(movie, announcement) {
+    selectedIndex = -1;
+    rebuildMovies();
+    renderList();
+    updateStatus();
+    showIdle();
+    updateControls();
+    el["crt-live"].textContent = announcement;
+  }
+
+  /* Custom titles are deleted outright; baseline titles are only hidden, so
+     File > Restore Hidden Titles can always put them back. */
+  function removeMovie(movie) {
+    if (movie.custom) {
+      confirmDialog(
+        "Delete " + movie.title + "?",
+        "This title was added by hand, so deleting it is permanent — it is not in movies.json to restore from.\n\n" +
+        "Export your collection first if you want a copy.",
+        function () { deleteCustomMovie(movie); }
+      );
+      return;
+    }
+    hideMovie(movie);
+  }
+
+  function deleteCustomMovie(movie) {
     var key = keyOf(movie);
     customMovies = customMovies.filter(function (m) {
       return keyOf(m) !== key;
@@ -440,13 +497,35 @@
     delete watched[key];
     delete vetoed[key];
     saveWatched();
+    afterRemoval(movie, movie.title + " deleted.");
+  }
+
+  function hideMovie(movie) {
+    hidden[keyOf(movie)] = true;
+    saveHidden();
+    afterRemoval(movie, movie.title + " removed. Restore it under File.");
+  }
+
+  function restoreMovie(movie) {
+    delete hidden[keyOf(movie)];
+    saveHidden();
     selectedIndex = -1;
     rebuildMovies();
     renderList();
     updateStatus();
-    showIdle();
     updateControls();
-    el["crt-live"].textContent = movie.title + " removed.";
+    el["crt-live"].textContent = movie.title + " restored.";
+  }
+
+  function restoreAll() {
+    hidden = Object.create(null);
+    saveHidden();
+    selectedIndex = -1;
+    rebuildMovies();
+    renderList();
+    updateStatus();
+    updateControls();
+    el["crt-live"].textContent = "All hidden titles restored.";
   }
 
   function rebuildSnacks() {
@@ -625,7 +704,7 @@
     if (spinning) return;
     confirmDialog(
       "Reset Everything?",
-      "This clears every watched mark and every veto for this session.\n\nCustom titles and snacks are kept.",
+      "This clears every watched mark and every veto for this session.\n\nCustom titles, snacks, and removed titles are all kept.",
       function () {
         watched = Object.create(null);
         vetoed = Object.create(null);
@@ -940,6 +1019,51 @@
     openDialog(dlgPantry);
   }
 
+  /* ---------- Hidden titles ------------------------------------------------------- */
+
+  var dlgHidden = document.getElementById("dlg-hidden");
+
+  function renderHidden() {
+    var list = hiddenTitles();
+    var container = document.getElementById("hidden-list");
+    container.textContent = "";
+
+    document.getElementById("hidden-intro").textContent = list.length
+      ? "These baseline titles are hidden in this browser. movies.json was never touched."
+      : "Nothing is hidden right now.";
+    document.getElementById("restore-all").disabled = !list.length;
+
+    list.forEach(function (movie) {
+      var row = text("div", "pantry-row");
+
+      var main = text("div", "pantry-main");
+      main.appendChild(text("span", "pantry-name", movie.title));
+      main.appendChild(text("span", "pantry-prep", movie.year + " · " + movie.rating));
+      row.appendChild(main);
+
+      var restore = text("button", "btn restore-btn", "Restore");
+      restore.type = "button";
+      restore.setAttribute("aria-label", "Restore " + movie.title);
+      restore.addEventListener("click", function () {
+        restoreMovie(movie);
+        renderHidden();
+      });
+      row.appendChild(restore);
+
+      container.appendChild(row);
+    });
+  }
+
+  function openHidden() {
+    renderHidden();
+    openDialog(dlgHidden);
+  }
+
+  document.getElementById("restore-all").addEventListener("click", function () {
+    restoreAll();
+    renderHidden();
+  });
+
   /* ---------- Filters ---------------------------------------------------------------- */
 
   var dlgFilters = document.getElementById("dlg-filters");
@@ -1013,6 +1137,7 @@
       version: 1,
       customMovies: customMovies,
       customSnacks: customSnacks,
+      hidden: Object.keys(hidden),
       watched: Object.keys(watched)
     };
 
@@ -1079,8 +1204,15 @@
       });
     }
 
+    if (Array.isArray(data.hidden)) {
+      data.hidden.forEach(function (k) {
+        if (typeof k === "string") hidden[k] = true;
+      });
+    }
+
     saveCustomMovies();
     saveCustomSnacks();
+    saveHidden();
     saveWatched();
     rebuildMovies();
     rebuildSnacks();
@@ -1163,6 +1295,7 @@
     var rows = [
       ["Titles installed", String(movies.length)],
       ["Custom titles", String(customMovies.length)],
+      ["Hidden titles", String(hiddenTitles().length)],
       ["Snacks in pantry", String(snacks.length)],
       ["Watched", String(Object.keys(watched).length)],
       ["Vetoed tonight", String(Object.keys(vetoed).length)],
@@ -1242,6 +1375,7 @@
     switch (action) {
       case "add-title":        closeMenu(); openAddTitle(); break;
       case "add-snack":        closeMenu(); openAddSnack(); break;
+      case "restore-hidden":   closeMenu(); openHidden(); break;
       case "export":           closeMenu(); exportCollection(); break;
       case "import":           closeMenu(); el["import-file"].click(); break;
       case "shutdown":         shutDown(); break;
@@ -1369,6 +1503,7 @@
 
   async function init() {
     watched = loadWatched();
+    hidden = loadHidden();
     loadSettings();
     applyTheme();
     applyScanlines();

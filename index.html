@@ -32,6 +32,8 @@
         <button type="button" class="dropdown-item" role="menuitem" data-action="add-title">Add Title&hellip;</button>
         <button type="button" class="dropdown-item" role="menuitem" data-action="add-snack">Add Snack&hellip;</button>
         <div class="dropdown-sep" role="separator"></div>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="restore-hidden">Restore Hidden Titles&hellip;</button>
+        <div class="dropdown-sep" role="separator"></div>
         <button type="button" class="dropdown-item" role="menuitem" data-action="export">Export Collection</button>
         <button type="button" class="dropdown-item" role="menuitem" data-action="import">Import Collection&hellip;</button>
         <div class="dropdown-sep" role="separator"></div>
@@ -213,6 +215,21 @@
       <div class="dialog-buttons">
         <button type="button" class="btn btn-primary" data-close>Close</button>
         <button type="button" class="btn" data-action="add-snack">Add Snack&hellip;</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog dialog-wide" id="dlg-hidden" role="dialog" aria-modal="true" aria-labelledby="dlg-hidden-h" hidden>
+    <div class="dialog-title">
+      <span id="dlg-hidden-h">Hidden Titles</span>
+      <button type="button" class="tb-btn tb-close dialog-x" data-close aria-label="Close"></button>
+    </div>
+    <div class="dialog-body">
+      <p class="dialog-text" id="hidden-intro"></p>
+      <div class="listbox listbox-pantry" id="hidden-list"></div>
+      <div class="dialog-buttons">
+        <button type="button" class="btn btn-primary" data-close>Close</button>
+        <button type="button" class="btn" id="restore-all">Restore all</button>
       </div>
     </div>
   </div>
