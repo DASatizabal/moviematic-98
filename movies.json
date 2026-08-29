@@ -75,5 +75,110 @@
     "rating": "PG-13",
     "runtime": 112,
     "hook": "Beat seven evil exes to earn the right to date the girl."
+  },
+  {
+    "title": "The Fifth Element",
+    "year": 1997,
+    "rating": "PG-13",
+    "runtime": 126,
+    "hook": "Cab driver, orange-haired alien, and one very loud opera singer."
+  },
+  {
+    "title": "Clue",
+    "year": 1985,
+    "rating": "PG",
+    "runtime": 94,
+    "hook": "Six guests, one butler, and three completely different endings."
+  },
+  {
+    "title": "The Princess Bride",
+    "year": 1987,
+    "rating": "PG",
+    "runtime": 98,
+    "hook": "Pirates, giants, and a swordsman with one very specific speech."
+  },
+  {
+    "title": "Jumanji",
+    "year": 1995,
+    "rating": "PG",
+    "runtime": 104,
+    "hook": "A board game spits out a jungle and refuses to be abandoned."
+  },
+  {
+    "title": "Men in Black",
+    "year": 1997,
+    "rating": "PG-13",
+    "runtime": 98,
+    "hook": "Secret agents in black suits keep the alien paperwork tidy."
+  },
+  {
+    "title": "The Emperor's New Groove",
+    "year": 2000,
+    "rating": "G",
+    "runtime": 78,
+    "hook": "Spoiled emperor becomes a llama and has to walk it off."
+  },
+  {
+    "title": "Space Jam",
+    "year": 1996,
+    "rating": "PG",
+    "runtime": 88,
+    "hook": "Cartoon rabbits recruit a basketball legend to avoid enslavement."
+  },
+  {
+    "title": "Kung Fu Hustle",
+    "year": 2004,
+    "rating": "R",
+    "runtime": 99,
+    "hook": "A slum full of retired masters versus the Axe Gang."
+  },
+  {
+    "title": "Hocus Pocus",
+    "year": 1993,
+    "rating": "PG",
+    "runtime": 96,
+    "hook": "Three witches get one night back and waste most of it."
+  },
+  {
+    "title": "Napoleon Dynamite",
+    "year": 2004,
+    "rating": "PG",
+    "runtime": 96,
+    "hook": "Tots, a llama named Tina, and a dance that wins the election."
+  },
+  {
+    "title": "Ghostbusters",
+    "year": 1984,
+    "rating": "PG",
+    "runtime": 105,
+    "hook": "Fired academics start a small business in the paranormal sector."
+  },
+  {
+    "title": "Big Trouble in Little China",
+    "year": 1986,
+    "rating": "PG-13",
+    "runtime": 99,
+    "hook": "Truck driver is confidently the sidekick of his own movie."
+  },
+  {
+    "title": "The Iron Giant",
+    "year": 1999,
+    "rating": "PG",
+    "runtime": 86,
+    "hook": "Boy finds a giant robot. You are not going to be okay."
+  },
+  {
+    "title": "Paddington 2",
+    "year": 2017,
+    "rating": "PG",
+    "runtime": 103,
+    "hook": "A polite bear goes to prison and improves it considerably."
+  },
+  {
+    "title": "Everything Everywhere All at Once",
+    "year": 2022,
+    "rating": "R",
+    "runtime": 139,
+    "hook": "Laundromat audit spirals into every version of one life."
   }
 ]

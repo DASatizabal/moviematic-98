@@ -11,6 +11,7 @@
   --navy: #000080;
   --navy-lite: #1084d0;
   --phosphor: #33ff66;
+  --desktop: #008080;
   --font-chrome: Tahoma, "MS Sans Serif", "Segoe UI", Geneva, Verdana, sans-serif;
   --font-crt: "Courier New", Courier, monospace;
 
@@ -39,7 +40,7 @@ html, body {
 
 body {
   min-height: 100vh;
-  background: #008080; /* the one true teal desktop */
+  background: var(--desktop); /* teal by default; the View menu swaps it */
   font-family: var(--font-chrome);
   font-size: 12px;
   color: #000;
@@ -463,6 +464,485 @@ body {
   .btn:active:not(:disabled) { padding: 6px 7px 4px 9px; }
 
   .menu-item { padding: 2px 5px; }
+}
+
+/* ---------- Themes ------------------------------------------------------------- */
+/* Each theme only repaints the desktop, the phosphor, and the title bar ramp. */
+
+:root[data-theme="amber"] {
+  --desktop: #3f3222;
+  --phosphor: #ffb000;
+  --navy: #6b4c12;
+  --navy-lite: #c08a1e;
+}
+
+:root[data-theme="y2k"] {
+  --desktop: #ff8fd4;
+  --phosphor: #ff5ecb;
+  --navy: #7a0f6b;
+  --navy-lite: #d24bc0;
+}
+
+:root[data-theme="midnight"] {
+  --desktop: #101a2b;
+  --phosphor: #4de2ff;
+  --navy: #16324f;
+  --navy-lite: #2a6fa8;
+}
+
+/* The CRT text was hard-coded green; drive it from the theme token instead. */
+.crt-kicker { color: var(--phosphor); opacity: 0.5; }
+.crt-meta   { color: var(--phosphor); opacity: 0.85; }
+.crt-hook   { color: var(--phosphor); opacity: 0.75; }
+.crt-title  { text-shadow: 0 0 8px var(--phosphor); }
+
+.crt-second {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed currentColor;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--phosphor);
+  opacity: 0.7;
+}
+
+/* hidden must beat the display rules further down this file. */
+[hidden] { display: none !important; }
+
+/* ---------- Menu bar dropdowns ---------------------------------------------------- */
+
+.menu { position: relative; }
+
+.menu-item {
+  background: none;
+  border: 0;
+  font-family: inherit;
+  color: #000;
+}
+
+.menu-item.is-open {
+  background: var(--navy);
+  color: #fff;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 20;
+  min-width: 195px;
+  padding: 2px;
+  background: var(--face);
+  box-shadow: var(--bevel-out), 2px 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.dropdown-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  padding: 4px 8px 4px 22px;
+  background: none;
+  border: 0;
+  font-family: var(--font-chrome);
+  font-size: 12px;
+  color: #000;
+  text-align: left;
+  cursor: default;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus-visible {
+  background: var(--navy);
+  color: #fff;
+  outline: none;
+}
+
+/* Checkmarks for the radio / checkbox style entries. */
+.dropdown-item[aria-checked="true"]::before {
+  content: "\2713";
+  position: absolute;
+  left: 7px;
+  font-size: 11px;
+}
+
+.dropdown-key {
+  color: var(--shadow);
+  font-size: 11px;
+}
+
+.dropdown-item:hover .dropdown-key,
+.dropdown-item:focus-visible .dropdown-key { color: #c8d4f0; }
+
+.dropdown-sep {
+  height: 0;
+  margin: 3px 2px;
+  border-top: 1px solid var(--shadow);
+  border-bottom: 1px solid #fff;
+}
+
+/* ---------- Window chrome behaviors ------------------------------------------------ */
+
+.window.is-maximized { max-width: 100%; }
+
+.window.is-minimized .menu-bar,
+.window.is-minimized .window-body,
+.window.is-minimized .status-bar { display: none; }
+
+.tb-btn {
+  border: 0;
+  padding: 0;
+  cursor: default;
+}
+
+.tb-btn:active { box-shadow: var(--bevel-in); }
+
+/* ---------- List extras -------------------------------------------------------------- */
+
+.row-badge {
+  margin-left: 4px;
+  color: #9a6b00;
+}
+
+.row.is-selected .row-badge { color: #ffd75e; }
+
+.row-del {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: var(--face);
+  box-shadow: var(--bevel-out);
+  font-family: var(--font-chrome);
+  font-size: 11px;
+  line-height: 1;
+  color: #000;
+  cursor: default;
+}
+
+.row-del:active { box-shadow: var(--bevel-in); }
+
+.row.is-vetoed .row-title {
+  text-decoration: line-through;
+  color: #a00000;
+}
+
+.row.is-vetoed .row-year { opacity: 0.5; }
+.row.is-selected.is-vetoed .row-title { color: #ffb3ab; }
+
+.pane-hint {
+  margin: 5px 0 0;
+  font-size: 11px;
+  color: #333;
+}
+
+/* ---------- Snack bar ------------------------------------------------------------------ */
+
+.snack-bar {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 5px 7px;
+  min-height: 26px;
+  background: #000;
+  box-shadow: var(--bevel-in);
+  font-family: var(--font-crt);
+  font-size: 11px;
+  color: var(--phosphor);
+}
+
+.snack-label {
+  flex: 0 0 auto;
+  letter-spacing: 1px;
+  opacity: 0.55;
+}
+
+.snack-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 1.35;
+  overflow-wrap: break-word;
+}
+
+.snack-bar.is-spinning .snack-text { opacity: 0.65; }
+
+.button-row-second { margin-top: 6px; }
+
+/* ---------- Modal layer / dialogs -------------------------------------------------------- */
+
+.modal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.dialog {
+  width: 100%;
+  max-width: 380px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: var(--face);
+  box-shadow: var(--bevel-out), 3px 3px 0 rgba(0, 0, 0, 0.4);
+  padding: 3px;
+}
+
+.dialog-wide { max-width: 480px; }
+
+.dialog-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 3px 3px 3px 5px;
+  background: linear-gradient(90deg, var(--navy) 0%, var(--navy-lite) 100%);
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.dialog-body { padding: 12px 12px 10px; }
+
+.dialog-text {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.dialog-error {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: #a00000;
+}
+
+.dialog-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+/* ---------- Form fields ---------------------------------------------------------------- */
+
+.field { margin-bottom: 10px; }
+
+.field label {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 12px;
+}
+
+.field input[type="text"],
+.field input[type="number"],
+.field select {
+  width: 100%;
+  padding: 3px 4px;
+  background: #fff;
+  border: 0;
+  box-shadow: var(--bevel-in);
+  font-family: var(--font-chrome);
+  font-size: 12px;
+  color: #000;
+}
+
+.field input[type="range"] {
+  width: 100%;
+  margin: 4px 0 0;
+  accent-color: var(--navy);
+}
+
+.field-row {
+  display: flex;
+  gap: 8px;
+}
+
+.field-row .field { flex: 1 1 0; min-width: 0; }
+
+.field-hint {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--shadow);
+}
+
+.fieldset {
+  margin: 0 0 12px;
+  padding: 8px 10px 10px;
+  border: 1px solid var(--shadow);
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+}
+
+.fieldset legend {
+  padding: 0 4px;
+  font-size: 12px;
+}
+
+.check-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+
+.check-inline {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  cursor: default;
+}
+
+.check-inline input { margin: 0; }
+
+/* ---------- Pantry ------------------------------------------------------------------------ */
+
+.listbox-pantry {
+  min-height: 0;
+  max-height: 300px;
+  padding: 0;
+}
+
+.pantry-row {
+  position: relative;
+  padding: 6px 28px 7px 7px;
+  border-bottom: 1px dotted #cfcfcf;
+}
+
+.pantry-row:last-child { border-bottom: 0; }
+
+.pantry-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.pantry-name { font-weight: bold; }
+
+.pantry-prep {
+  flex: 0 0 auto;
+  color: var(--shadow);
+  font-size: 11px;
+}
+
+.pantry-note {
+  margin: 3px 0 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #444;
+}
+
+.pantry-del {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+/* ---------- About box ---------------------------------------------------------------------- */
+
+.about-title {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.about-rule {
+  margin: 10px 0;
+  border: 0;
+  border-top: 1px solid var(--shadow);
+  border-bottom: 1px solid #fff;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 12px;
+  font-size: 12px;
+}
+
+.about-key { color: #333; }
+.about-val { font-weight: bold; overflow-wrap: break-word; }
+
+/* ---------- Shutdown / blue screen ------------------------------------------------------------ */
+
+.shutdown {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #000;
+  font-family: var(--font-crt);
+  text-align: center;
+  cursor: default;
+}
+
+.shutdown-text {
+  margin: 0;
+  font-size: clamp(20px, 5.5vw, 40px);
+  line-height: 1.35;
+  color: #ffb000;
+  text-shadow: 0 0 14px rgba(255, 176, 0, 0.55);
+}
+
+.shutdown-sub {
+  margin: 22px 0 0;
+  font-size: 12px;
+  color: #8a6200;
+}
+
+.bsod {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #0000aa;
+  color: #fff;
+  font-family: var(--font-crt);
+  cursor: default;
+}
+
+.bsod-inner {
+  width: 100%;
+  max-width: 620px;
+  font-size: clamp(11px, 2.4vw, 14px);
+  line-height: 1.55;
+}
+
+.bsod p { margin: 0 0 4px; }
+
+.bsod-head {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 0 10px;
+  background: #aaaaaa;
+  color: #0000aa;
+  font-weight: bold;
+}
+
+.bsod-foot { margin-top: 16px; text-align: center; }
+
+/* ---------- Responsive ------------------------------------------------------------------------ */
+
+@media (max-width: 620px) {
+  .dropdown { min-width: 175px; }
+  .dialog { max-width: 100%; }
+  .field-row { flex-wrap: wrap; }
+  .field-row .field { flex: 1 1 46%; }
 }
 
 /* ---------- Reduced motion ------------------------------------------------------ */

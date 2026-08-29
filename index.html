@@ -4,31 +4,75 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MovieMatic 98</title>
-<meta name="description" content="A Windows 98 style movie night picker for family movie night.">
+<meta name="description" content="A Windows 98 style movie night picker with snack pairings, custom titles, filters, and themes.">
 <link rel="stylesheet" href="styles.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%23000080'/><rect x='3' y='5' width='10' height='7' fill='%2333ff66'/></svg>">
 </head>
 <body>
 
-<div class="window" role="application" aria-label="MovieMatic 98">
+<div class="window" id="window" role="application" aria-label="MovieMatic 98">
 
-  <div class="title-bar">
+  <div class="title-bar" id="title-bar">
     <div class="title-bar-text">
       <span class="title-bar-icon" aria-hidden="true"></span>
       MovieMatic 98
     </div>
-    <div class="title-bar-controls" aria-hidden="true">
-      <span class="tb-btn tb-min"></span>
-      <span class="tb-btn tb-max"></span>
-      <span class="tb-btn tb-close"></span>
+    <div class="title-bar-controls">
+      <button type="button" class="tb-btn tb-min" id="tb-min" title="Minimize" aria-label="Minimize"></button>
+      <button type="button" class="tb-btn tb-max" id="tb-max" title="Maximize" aria-label="Maximize"></button>
+      <button type="button" class="tb-btn tb-close" id="tb-close" title="Close" aria-label="Close"></button>
     </div>
   </div>
 
-  <div class="menu-bar" role="presentation">
-    <span class="menu-item"><u>F</u>ile</span>
-    <span class="menu-item"><u>V</u>iew</span>
-    <span class="menu-item"><u>S</u>nacks</span>
-    <span class="menu-item"><u>H</u>elp</span>
+  <div class="menu-bar" id="menu-bar" role="menubar" aria-label="Main menu">
+
+    <div class="menu">
+      <button type="button" class="menu-item" id="menu-file" role="menuitem" aria-haspopup="true" aria-expanded="false" data-menu="file"><u>F</u>ile</button>
+      <div class="dropdown" id="dropdown-file" role="menu" aria-labelledby="menu-file" hidden>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="add-title">Add Title&hellip;</button>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="add-snack">Add Snack&hellip;</button>
+        <div class="dropdown-sep" role="separator"></div>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="export">Export Collection</button>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="import">Import Collection&hellip;</button>
+        <div class="dropdown-sep" role="separator"></div>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="shutdown">Shut Down&hellip;</button>
+      </div>
+    </div>
+
+    <div class="menu">
+      <button type="button" class="menu-item" id="menu-view" role="menuitem" aria-haspopup="true" aria-expanded="false" data-menu="view"><u>V</u>iew</button>
+      <div class="dropdown" id="dropdown-view" role="menu" aria-labelledby="menu-view" hidden>
+        <button type="button" class="dropdown-item" role="menuitemradio" aria-checked="true"  data-action="theme" data-theme="teal">Teal Desktop</button>
+        <button type="button" class="dropdown-item" role="menuitemradio" aria-checked="false" data-action="theme" data-theme="amber">Amber Monitor</button>
+        <button type="button" class="dropdown-item" role="menuitemradio" aria-checked="false" data-action="theme" data-theme="y2k">Y2K Bubblegum</button>
+        <button type="button" class="dropdown-item" role="menuitemradio" aria-checked="false" data-action="theme" data-theme="midnight">Midnight Cyan</button>
+        <div class="dropdown-sep" role="separator"></div>
+        <button type="button" class="dropdown-item" role="menuitemcheckbox" aria-checked="true"  data-action="toggle-scanlines">Scanlines</button>
+        <button type="button" class="dropdown-item" role="menuitemcheckbox" aria-checked="false" data-action="toggle-sound">Sound Effects</button>
+        <div class="dropdown-sep" role="separator"></div>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="filters">Filters&hellip;</button>
+      </div>
+    </div>
+
+    <div class="menu">
+      <button type="button" class="menu-item" id="menu-snacks" role="menuitem" aria-haspopup="true" aria-expanded="false" data-menu="snacks"><u>S</u>nacks</button>
+      <div class="dropdown" id="dropdown-snacks" role="menu" aria-labelledby="menu-snacks" hidden>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="roll-snack">Roll A Snack<span class="dropdown-key">S</span></button>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="pantry">Open The Pantry&hellip;</button>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="add-snack">Add Snack&hellip;</button>
+      </div>
+    </div>
+
+    <div class="menu">
+      <button type="button" class="menu-item" id="menu-help" role="menuitem" aria-haspopup="true" aria-expanded="false" data-menu="help"><u>H</u>elp</button>
+      <div class="dropdown" id="dropdown-help" role="menu" aria-labelledby="menu-help" hidden>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="shortcuts">Keyboard Shortcuts&hellip;</button>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="excuse">Excuse Generator&hellip;</button>
+        <div class="dropdown-sep" role="separator"></div>
+        <button type="button" class="dropdown-item" role="menuitem" data-action="about">About MovieMatic 98&hellip;</button>
+      </div>
+    </div>
+
   </div>
 
   <div class="window-body">
@@ -39,6 +83,7 @@
         <div class="listbox" id="listbox" role="listbox" aria-labelledby="list-legend" tabindex="-1">
           <p class="listbox-loading" id="listbox-loading">Loading movies.json&hellip;</p>
         </div>
+        <p class="pane-hint" id="filter-hint" hidden></p>
       </section>
 
       <section class="pane pane-crt" aria-labelledby="crt-legend">
@@ -50,9 +95,15 @@
             <p class="crt-title" id="crt-title">READY<span class="caret" id="caret">_</span></p>
             <p class="crt-meta" id="crt-meta"></p>
             <p class="crt-hook" id="crt-hook"></p>
+            <p class="crt-second" id="crt-second" hidden></p>
           </div>
-          <div class="scanlines" aria-hidden="true"></div>
+          <div class="scanlines" id="scanlines" aria-hidden="true"></div>
           <div class="crt-live" id="crt-live" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="snack-bar" id="snack-bar">
+          <span class="snack-label">SNACK</span>
+          <span class="snack-text" id="snack-text">Nothing rolled yet.</span>
         </div>
 
         <label class="check-row" for="skip-watched">
@@ -62,7 +113,12 @@
 
         <div class="button-row">
           <button type="button" class="btn btn-primary" id="btn-pick">Pick for me</button>
+          <button type="button" class="btn" id="btn-double">Double feature</button>
+          <button type="button" class="btn" id="btn-snack">Snack attack</button>
+        </div>
+        <div class="button-row button-row-second">
           <button type="button" class="btn" id="btn-watched">Mark watched</button>
+          <button type="button" class="btn" id="btn-veto">Veto</button>
           <button type="button" class="btn" id="btn-reset">Reset</button>
         </div>
       </section>
@@ -73,9 +129,115 @@
   <div class="status-bar">
     <div class="status-cell" id="status-titles">0 titles</div>
     <div class="status-cell" id="status-watched">0 watched</div>
+    <div class="status-cell" id="status-pool">0 in pool</div>
   </div>
 
 </div>
+
+<!-- ---------- Dialogs ---------- -->
+
+<div class="modal-layer" id="modal-layer" hidden>
+
+  <div class="dialog" id="dlg-add-title" role="dialog" aria-modal="true" aria-labelledby="dlg-add-title-h" hidden>
+    <div class="dialog-title">
+      <span id="dlg-add-title-h">Add Title</span>
+      <button type="button" class="tb-btn tb-close dialog-x" data-close aria-label="Close"></button>
+    </div>
+    <form class="dialog-body" id="form-add-title">
+      <div class="field"><label for="f-title">Title</label><input type="text" id="f-title" maxlength="80" required></div>
+      <div class="field-row">
+        <div class="field"><label for="f-year">Year</label><input type="number" id="f-year" min="1888" max="2099" step="1" required></div>
+        <div class="field"><label for="f-rating">Rating</label>
+          <select id="f-rating">
+            <option>G</option><option>PG</option><option selected>PG-13</option><option>R</option><option>NR</option>
+          </select>
+        </div>
+        <div class="field"><label for="f-runtime">Minutes</label><input type="number" id="f-runtime" min="1" max="600" step="1" required></div>
+      </div>
+      <div class="field"><label for="f-hook">One-line hook</label><input type="text" id="f-hook" maxlength="140" placeholder="Optional, but it shows on the big screen."></div>
+      <p class="dialog-error" id="add-title-error" hidden></p>
+      <div class="dialog-buttons">
+        <button type="submit" class="btn btn-primary">OK</button>
+        <button type="button" class="btn" data-close>Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="dialog" id="dlg-add-snack" role="dialog" aria-modal="true" aria-labelledby="dlg-add-snack-h" hidden>
+    <div class="dialog-title">
+      <span id="dlg-add-snack-h">Add Snack</span>
+      <button type="button" class="tb-btn tb-close dialog-x" data-close aria-label="Close"></button>
+    </div>
+    <form class="dialog-body" id="form-add-snack">
+      <div class="field"><label for="f-snack">Snack</label><input type="text" id="f-snack" maxlength="60" required></div>
+      <div class="field"><label for="f-prep">Prep time</label><input type="text" id="f-prep" maxlength="20" placeholder="5 min"></div>
+      <div class="field"><label for="f-note">Serving note</label><input type="text" id="f-note" maxlength="140" placeholder="Optional wisdom."></div>
+      <p class="dialog-error" id="add-snack-error" hidden></p>
+      <div class="dialog-buttons">
+        <button type="submit" class="btn btn-primary">OK</button>
+        <button type="button" class="btn" data-close>Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="dialog" id="dlg-filters" role="dialog" aria-modal="true" aria-labelledby="dlg-filters-h" hidden>
+    <div class="dialog-title">
+      <span id="dlg-filters-h">Filters</span>
+      <button type="button" class="tb-btn tb-close dialog-x" data-close aria-label="Close"></button>
+    </div>
+    <form class="dialog-body" id="form-filters">
+      <fieldset class="fieldset">
+        <legend>Allowed ratings</legend>
+        <div class="check-grid" id="rating-checks"></div>
+      </fieldset>
+      <div class="field">
+        <label for="f-maxrun">Maximum runtime: <output id="maxrun-out">200</output> min</label>
+        <input type="range" id="f-maxrun" min="70" max="200" step="5" value="200">
+        <p class="field-hint">Slide all the way right for "no bedtime."</p>
+      </div>
+      <div class="dialog-buttons">
+        <button type="submit" class="btn btn-primary">OK</button>
+        <button type="button" class="btn" id="filters-clear">Clear</button>
+        <button type="button" class="btn" data-close>Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="dialog dialog-wide" id="dlg-pantry" role="dialog" aria-modal="true" aria-labelledby="dlg-pantry-h" hidden>
+    <div class="dialog-title">
+      <span id="dlg-pantry-h">The Pantry</span>
+      <button type="button" class="tb-btn tb-close dialog-x" data-close aria-label="Close"></button>
+    </div>
+    <div class="dialog-body">
+      <div class="listbox listbox-pantry" id="pantry-list"></div>
+      <div class="dialog-buttons">
+        <button type="button" class="btn btn-primary" data-close>Close</button>
+        <button type="button" class="btn" data-action="add-snack">Add Snack&hellip;</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="shutdown" id="shutdown" hidden>
+  <p class="shutdown-text">It&rsquo;s now safe to turn off<br>your movie night.</p>
+  <p class="shutdown-sub">Click anywhere to boot back up.</p>
+</div>
+
+<div class="bsod" id="bsod" hidden>
+  <div class="bsod-inner">
+    <p class="bsod-head">MovieMatic</p>
+    <p>A fatal exception 0E has occurred at 0028:C001CAFE in module <b>INDECISION.VXD</b>.</p>
+    <p>The current movie night will be terminated.</p>
+    <p>&nbsp;</p>
+    <p>* Press any key to end the debate about what to watch.</p>
+    <p>* Press any key to return to picking something like an adult.</p>
+    <p>&nbsp;</p>
+    <p class="bsod-foot">Press any key to continue _</p>
+  </div>
+</div>
+
+<input type="file" id="import-file" accept="application/json,.json" hidden>
 
 <script src="app.js"></script>
 </body>

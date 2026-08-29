@@ -1,0 +1,22 @@
+[
+  { "name": "Microwave Popcorn", "prep": "3 min", "note": "Stop at 2 seconds between pops. The bag is lying to you." },
+  { "name": "Nachos, Fully Loaded", "prep": "12 min", "note": "Cheese to chip ratio is a moral position. Choose wisely." },
+  { "name": "Cereal, Dry, By The Handful", "prep": "0 min", "note": "Sanctioned. It is a movie, not a dinner party." },
+  { "name": "Ice Cream Straight From The Tub", "prep": "1 min", "note": "One spoon per household. No bowls. No witnesses." },
+  { "name": "Pizza Rolls", "prep": "15 min", "note": "Molten for the first eight minutes. Respect the cooldown." },
+  { "name": "Chips And Whatever Dip Survives", "prep": "2 min", "note": "Double dipping is a felony in this jurisdiction." },
+  { "name": "Movie Theater Candy, Smuggled", "prep": "0 min", "note": "You bought it at the grocery store. Nobody has to know." },
+  { "name": "Cheese And Crackers, Fancy Edition", "prep": "6 min", "note": "Arrange on a board to unlock the sophisticated ending." },
+  { "name": "Leftovers, Cold, No Plate", "prep": "0 min", "note": "The refrigerator door is the dining room now." },
+  { "name": "Trail Mix, M&Ms Removed First", "prep": "4 min", "note": "You are the reason there are only raisins left." },
+  { "name": "Milkshake, Blender At Full Volume", "prep": "8 min", "note": "Make it before the movie. This is not negotiable." },
+  { "name": "A Suspicious Amount Of Pickles", "prep": "1 min", "note": "Crunch responsibly during the quiet scenes." },
+  { "name": "Toast. Just Toast.", "prep": "3 min", "note": "Minimalism. The snack equivalent of a black turtleneck." },
+  { "name": "Frozen Grapes", "prep": "0 min", "note": "Assuming somebody remembered to freeze them. Somebody did not." },
+  { "name": "Instant Ramen In A Mug", "prep": "5 min", "note": "The seasoning packet is a full serving of the ocean." },
+  { "name": "Cookie Dough, Unbaked, Unrepentant", "prep": "0 min", "note": "The label says don't. The label is not your supervisor." },
+  { "name": "Whatever The Kids Hid", "prep": "9 min", "note": "Check the couch, the closet, and behind the cereal boxes." },
+  { "name": "Charcuterie Board Of Regret", "prep": "20 min", "note": "You will finish assembling it during the credits." },
+  { "name": "Air. Nothing. Discipline.", "prep": "0 min", "note": "Bold. You will crack in 25 minutes." },
+  { "name": "Second Dinner", "prep": "18 min", "note": "The first dinner was a rehearsal and everyone knows it." }
+]
